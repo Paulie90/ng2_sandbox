@@ -5,6 +5,4 @@ import {Component} from '@angular/core';
     template: require('./NotFound.template')()
 })
 export class NotFoundComponent {
-    constructor() {
-    }
 }

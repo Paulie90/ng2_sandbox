@@ -4,6 +4,6 @@
   },
   "extends": "tslint:latest",
   "rules": {
-
+    "quotemark": [true, "single", "jsx-double"]
   }
 }

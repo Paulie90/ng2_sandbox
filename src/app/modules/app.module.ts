@@ -1,22 +1,23 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {BrowserModule} from '@angular/platform-browser';
-import {MainComponent} from './components/Main/Main.component';
-import {NotFoundComponent} from './common/NotFound/NotFound.component';
 import {APP_BASE_HREF} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouterModule, Routes} from '@angular/router';
+
+import {NotFoundComponent} from './common/NotFound/NotFound.component';
+import {MainComponent} from './components/Main/Main.component';
 
 const routes: Routes = [
     {
         path: 'main',
         component: MainComponent,
-        data: {title: 'Heroes List'}
+        data: {title: 'Heroes List'},
     },
     {
         path: '',
         redirectTo: '/heroes',
-        pathMatch: 'full'
+        pathMatch: 'full',
     },
-    {path: '**', component: NotFoundComponent}
+    {path: '**', component: NotFoundComponent},
 ];
 
 @NgModule({
@@ -24,15 +25,15 @@ const routes: Routes = [
     imports: [
         RouterModule.forRoot(
             routes,
-            {enableTracing: true}
+            {enableTracing: true},
         ),
-        BrowserModule
+        BrowserModule,
     ],
     declarations: [
         MainComponent,
-        NotFoundComponent
+        NotFoundComponent,
     ],
-    bootstrap: [MainComponent]
+    bootstrap: [MainComponent],
 })
 export class AppModule {
 }

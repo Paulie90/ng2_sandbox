@@ -5,8 +5,6 @@ import {Component} from '@angular/core';
     template: require('./Main.template')()
 })
 export class MainComponent {
-    testVal = 'asdqwe';
+    private testVal = 'asdqwe';
 
-    constructor() {
-    }
 }
