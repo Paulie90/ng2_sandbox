@@ -3,6 +3,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     watch: true,
@@ -19,7 +20,7 @@ module.exports = {
         }
     },
     resolve: {
-        extensions: ['.js', '.ts', '.pug']
+        extensions: ['.js', '.ts', '.pug', '.scss']
     },
     entry: {
         app: path.resolve(__dirname, 'src', 'app', 'bootstrap'),
@@ -35,6 +36,27 @@ module.exports = {
             {
                 test: /\.pug$/,
                 loader: 'pug-loader'
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    {
+                        loader: "style-loader"
+                    },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true,
+                            minimize: true
+                        }
+                    },
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    }
+                ]
             }
         ]
     },
@@ -44,10 +66,20 @@ module.exports = {
             path.resolve(__dirname, 'src'), // location of your src
             {} // a map of your routes
         ),
-        new webpack.optimize.CommonsChunkPlugin({name: "vendor", filename: "vendor.bundle.js"}),
+        new webpack.optimize.CommonsChunkPlugin(
+            {
+                name: "vendor",
+                filename: "vendor.bundle.js"
+            }
+        ),
         new HtmlWebpackPlugin({
             template: './src/index.html',
             inject: 'body'
+        }),
+        new UglifyJSPlugin({
+            parallel: true,
+            sourceMap: true,
+            cache: true
         })
     ],
     output: {

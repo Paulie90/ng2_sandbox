@@ -1,31 +1,19 @@
-import {APP_BASE_HREF} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {RouterModule, Routes} from '@angular/router';
+import { APP_BASE_HREF } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
 
-import {NotFoundComponent} from './common/NotFound/NotFound.component';
-import {MainComponent} from './components/Main/Main.component';
+import { APP_ROUTES } from './app.routes';
 
-const routes: Routes = [
-    {
-        path: 'main',
-        component: MainComponent,
-        data: {title: 'Heroes List'},
-    },
-    {
-        path: '',
-        redirectTo: '/heroes',
-        pathMatch: 'full',
-    },
-    {path: '**', component: NotFoundComponent},
-];
+import { NotFoundComponent } from './common/NotFound/NotFound.component';
+import { MainComponent } from './components/Main/Main.component';
 
 @NgModule({
-    providers: [{provide: APP_BASE_HREF, useValue: '/ng2'}],
+    providers: [{ provide: APP_BASE_HREF, useValue: '/ng2' }],
     imports: [
         RouterModule.forRoot(
-            routes,
-            {enableTracing: true},
+            APP_ROUTES,
+            { enableTracing: true },
         ),
         BrowserModule,
     ],
@@ -35,5 +23,4 @@ const routes: Routes = [
     ],
     bootstrap: [MainComponent],
 })
-export class AppModule {
-}
+export class AppModule { }

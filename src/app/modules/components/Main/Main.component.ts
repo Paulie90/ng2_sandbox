@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+import './Main';
 
 @Component({
     selector: 'main',
@@ -7,4 +8,7 @@ import {Component} from '@angular/core';
 export class MainComponent {
     private testVal = 'asdqwe';
 
+    constructor() {
+        // debugger
+    }
 }
