@@ -1,13 +1,26 @@
 'use strict';
+var _ = require('lodash');
 
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-    watch: true,
-    devtool: 'source-map',
+    entry: {
+        app: path.resolve(__dirname, 'src', 'app', 'bootstrap'),
+        vendor: path.resolve(__dirname, 'src', 'app', 'vendor')
+    },
+    resolve: {
+        extensions: ['.js', '.ts', '.pug', '.scss']
+    },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].[hash].js',
+        publicPath: '/'
+    },
     devServer: {
         contentBase: __dirname,
         stats: 'minimal',
@@ -18,13 +31,6 @@ module.exports = {
                 secure: false
             }
         }
-    },
-    resolve: {
-        extensions: ['.js', '.ts', '.pug', '.scss']
-    },
-    entry: {
-        app: path.resolve(__dirname, 'src', 'app', 'bootstrap'),
-        vendor: path.resolve(__dirname, 'src', 'app', 'vendor')
     },
     module: {
         rules: [
@@ -39,21 +45,18 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader']
+                })
+            },
+            {
+                test: /\.(jpe?g|png|gif|woff2|woff|ttf|eot|svg)$/,
                 use: [
                     {
-                        loader: "style-loader"
-                    },
-                    {
-                        loader: "css-loader",
+                        loader: 'url-loader',
                         options: {
-                            sourceMap: true,
-                            minimize: true
-                        }
-                    },
-                    {
-                        loader: "sass-loader",
-                        options: {
-                            sourceMap: true
+                            limit: 8192
                         }
                     }
                 ]
@@ -61,6 +64,14 @@ module.exports = {
         ]
     },
     plugins: [
+        new CleanWebpackPlugin([path.resolve(__dirname, 'dist')]),
+        new webpack.ProvidePlugin({
+            moment: 'moment',
+            'window.moment': 'moment',
+
+            _: 'lodash',
+            'window._': 'lodash',
+        }),
         new webpack.ContextReplacementPlugin(
             /(.+)?angular(\\|\/)core(.+)?/,
             path.resolve(__dirname, 'src'), // location of your src
@@ -69,22 +80,24 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin(
             {
                 name: "vendor",
-                filename: "vendor.bundle.js"
+                filename: "vendor.[hash].js"
             }
         ),
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            inject: 'body'
+        new ExtractTextPlugin({
+            filename: 'styles.[hash].css',
+            allChunks: true,
+            ignoreOrder: true
         }),
         new UglifyJSPlugin({
             parallel: true,
             sourceMap: true,
-            cache: true
+            cache: true,
+            extractComments: true
+        }),
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            inject: 'body',
+            hash: true
         })
-    ],
-    output: {
-        filename: '[name].bundle.js',
-        chunkFilename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist')
-    }
-};
+    ]
+}

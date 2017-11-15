@@ -9,6 +9,6 @@ export class MainComponent {
     private testVal = 'asdqwe';
 
     constructor() {
-        // debugger
+        debugger
     }
 }
