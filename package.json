@@ -51,7 +51,7 @@
   },
   "scripts": {
     "test": "npm test",
-    "dev": "webpack-dev-server --history-api-fallback --inline --watch --hot --progress -d",
+    "dev": "webpack-dev-server --hot --watch --progress -d",
     "build": "webpack --optimize-minimize --progress"
   },
   "author": "",

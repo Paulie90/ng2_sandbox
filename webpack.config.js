@@ -25,6 +25,9 @@ module.exports = {
         contentBase: __dirname,
         stats: 'minimal',
         port: 9000,
+        hotOnly: true,
+        watch: true,
+        historyApiFallback: true,
         proxy: {
             '/api': {
                 target: 'http://localhost:3000',
